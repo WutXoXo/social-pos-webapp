@@ -1,0 +1,59 @@
+<div class="login-page">
+    <div class="login-box">  
+        <div class="login-logo">
+          <a href="../../index2.html"><b>Social</b>POS</a>
+        </div>    
+        <!-- /.login-logo -->
+        <div class="card">
+          <div class="card-body login-card-body">
+            <p class="login-box-msg">ยินดีต้อนรับ</p>
+      
+            <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+              <div class="input-group mb-3">
+                <input type="email" class="form-control" placeholder="อีเมล" name="eMail" ngModel required [email]="true" #eMail="ngModel">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                  </div>
+                </div>            
+              </div>
+              
+              <div class="input-group mb-3">
+                <input type="password" class="form-control" placeholder="รหัสผ่าน" name="password" ngModel required minlength="6" #password="ngModel">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <span *ngIf="eMail.invalid && !eMail.errors.required" class="error text-red text-xs">!กรุณาใส่อีเมล์ที่ถูกต้อง</span>
+                  <span *ngIf="password.invalid && !password.errors.required" class="error text-red text-xs">!รหัสผ่านของคุณจะต้องมีความยาวอย่างน้อย 6 ตัวอักษร</span>
+                </div>
+                <!-- /.col -->
+                <div class="col-4">
+                  <button type="submit" class="btn btn-success btn-block" [disabled]="!f.valid">เข้าสู่ระบบ</button>
+                </div>
+                <!-- /.col -->
+              </div>
+            </form>
+      
+            <div class="social-auth-links text-center mb-3">
+              <p>- หรือ -</p>
+              <!-- <firebase-ui></firebase-ui> -->
+            </div>
+            <!-- /.social-auth-links -->
+      
+            <p class="mb-1 text-xs">
+              <a href="forgot-password.html">ลืมรหัสผ่านหรือไม่</a>
+            </p>
+            <p class="mb-0 text-xs">
+              <a href="register.html" class="text-center">สร้างบัญชีใหม่</a>
+            </p>
+          </div>
+          <!-- /.login-card-body -->
+        </div>
+      </div>
+    </div>
+    <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading> -->
