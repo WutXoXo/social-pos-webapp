@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-
-declare const App : any;
+import { Router } from '@angular/router';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +8,14 @@ declare const App : any;
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'social-pos-webapp';
+  title = 'Social POS';
+  constructor(private afAuth:AngularFireAuth,private router: Router){}
 
   ngOnInit(){
-    App.initMainPage();
+    this.afAuth.authState.subscribe(res => {
+      if (res == null) {
+        this.router.navigate(["/login"]);
+      }
+    });
   }
 }

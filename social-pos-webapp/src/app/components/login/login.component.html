@@ -1,7 +1,9 @@
 <div class="login-page">
     <div class="login-box">  
         <div class="login-logo">
-          <a href="../../index2.html"><b>Social</b>POS</a>
+          <a routerLink="app">
+            <img src="assets/logo.png" alt="logo" height="150">
+          </a>
         </div>    
         <!-- /.login-logo -->
         <div class="card">
@@ -10,7 +12,7 @@
       
             <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
               <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="อีเมล" name="eMail" ngModel required [email]="true" #eMail="ngModel">
+                <input type="email" class="form-control" placeholder="อีเมล" name="email" ngModel required [email]="true" #eMail="ngModel">
                 <div class="input-group-append">
                   <div class="input-group-text">
                     <span class="fas fa-envelope"></span>
@@ -41,7 +43,7 @@
       
             <div class="social-auth-links text-center mb-3">
               <p>- หรือ -</p>
-              <!-- <firebase-ui></firebase-ui> -->
+              <firebase-ui></firebase-ui>
             </div>
             <!-- /.social-auth-links -->
       
@@ -56,4 +58,13 @@
         </div>
       </div>
     </div>
-    <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading> -->
+
+<ng-template #customLoadingTemplate>
+  <div class="custom-class">
+      <h3>
+          Loading...
+      </h3>
+  </div>
+</ng-template>
+
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>

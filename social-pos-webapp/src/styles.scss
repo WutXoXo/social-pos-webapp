@@ -1,6 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~firebaseui/dist/firebaseui.css';
 body
 {
     font-family: 'Kanit', sans-serif !important;
     overflow-x: hidden !important;
+}
+.sidebar-complementary {
+    background-color: #600f66 !important;
+    color: #ffffff;
+}
+.sidebar-analogous {
+    background-color: #004e30 !important;
+    color: #ffffff;
+}
+.sidebar-triadic {
+    background-color: #301c9a !important;
+    color: #ffffff;
 }
