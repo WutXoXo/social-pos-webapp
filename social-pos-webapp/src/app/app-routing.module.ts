@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
+import { AngularFireAuthGuard, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
 
-import { LoginComponent } from './components/login/login.component';
+
 import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/account/signin']);
+const redirectLoggedInToItems = () => redirectLoggedInTo(['/app']);
 
 const routes: Routes = [
   {path:'',redirectTo:'/app',pathMatch:'full'},
@@ -13,10 +15,15 @@ const routes: Routes = [
     path: 'app',
     component: HomeComponent,
     canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
     children: [ 
       {
         path: '',
         component: DashboardComponent
+      },
+      {
+        path:'account',
+        loadChildren: () => import('./modules/accounts/accounts.module').then(m => m.AccountsModule)
       },    
       {
         path: 'dashboard',
@@ -24,8 +31,13 @@ const routes: Routes = [
       }
     ]    
   },
-  {path:'login',component:LoginComponent},
-  {path:'**',redirectTo:'/app'}
+  { 
+    path: 'account', 
+    loadChildren: () => import('./modules/accounts/accounts.module').then(m => m.AccountsModule) 
+  },
+  { 
+    path:'**',redirectTo:'/app' 
+  }
 ];
 
 @NgModule({

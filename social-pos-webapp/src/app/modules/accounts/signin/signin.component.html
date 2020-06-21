@@ -1,18 +1,18 @@
 <div class="login-page">
     <div class="login-box">  
         <div class="login-logo">
-          <a routerLink="app">
+          <a routerLink="/app">
             <img src="assets/logo.png" alt="logo" height="150">
           </a>
         </div>    
         <!-- /.login-logo -->
         <div class="card">
           <div class="card-body login-card-body">
-            <p class="login-box-msg">ยินดีต้อนรับ</p>
+            <p class="login-box-msg">เข้าสู่ระบบ</p>
       
             <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
               <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="อีเมล" name="email" ngModel required [email]="true" #eMail="ngModel">
+                <input type="email" class="form-control" placeholder="อีเมล" name="email" ngModel required [email]="true" #email="ngModel" autocomplete=email>
                 <div class="input-group-append">
                   <div class="input-group-text">
                     <span class="fas fa-envelope"></span>
@@ -21,7 +21,7 @@
               </div>
               
               <div class="input-group mb-3">
-                <input type="password" class="form-control" placeholder="รหัสผ่าน" name="password" ngModel required minlength="6" #password="ngModel">
+                <input type="password" class="form-control" placeholder="รหัสผ่าน" name="password" ngModel required minlength="6" #password="ngModel" autocomplete=current-password>
                 <div class="input-group-append">
                   <div class="input-group-text">
                     <span class="fas fa-lock"></span>
@@ -30,8 +30,11 @@
               </div>
               <div class="row">
                 <div class="col-8">
-                  <span *ngIf="eMail.invalid && !eMail.errors.required" class="error text-red text-xs">!กรุณาใส่อีเมล์ที่ถูกต้อง</span>
+                  <span *ngIf="email.invalid && !email.errors.required" class="error text-red text-xs">!กรุณาใส่อีเมล์ที่ถูกต้อง</span>
                   <span *ngIf="password.invalid && !password.errors.required" class="error text-red text-xs">!รหัสผ่านของคุณจะต้องมีความยาวอย่างน้อย 6 ตัวอักษร</span>
+                  <span *ngIf="wrong_password" class="error text-red text-xs">!รหัสผ่านไม่ถูกต้องหรือผู้ใช้ไม่มีรหัสผ่าน</span>
+                  <span *ngIf="user_not_found" class="error text-red text-xs">!ไม่มีบันทึกของผู้ใช้ที่สอดคล้องกับตัวระบุนี้หรือผู้ใช้อาจถูกลบไปแล้ว</span>
+                  <span *ngIf="user_other" class="error text-red text-xs">!{{user_other_msg}}</span>
                 </div>
                 <!-- /.col -->
                 <div class="col-4">
@@ -51,7 +54,7 @@
               <a href="forgot-password.html">ลืมรหัสผ่านหรือไม่</a>
             </p>
             <p class="mb-0 text-xs">
-              <a href="register.html" class="text-center">สร้างบัญชีใหม่</a>
+              <a routerLink="/account/signup" class="text-center">สร้างบัญชีใหม่</a>
             </p>
           </div>
           <!-- /.login-card-body -->

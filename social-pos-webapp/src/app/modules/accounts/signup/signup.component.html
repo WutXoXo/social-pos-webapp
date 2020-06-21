@@ -1,0 +1,89 @@
+<div class="register-page">
+    <div class="register-box">
+      <div class="login-logo">
+        <a routerLink="/app">
+          <img src="assets/logo.png" alt="logo" height="150">
+        </a>
+      </div>    
+      
+        <div class="card">
+          <div class="card-body register-card-body">
+            <p class="login-box-msg">ลงทะเบียนสมาชิก</p>
+      
+            <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="ชื่อ-นามสกุล" name="displayName" ngModel required #displayName="ngModel">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-user"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <input type="email" class="form-control" placeholder="อีเมล" name="email" ngModel required [email]="true" #email="ngModel" autocomplete=email>
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <input type="password" class="form-control" placeholder="รหัสผ่าน" name="password" ngModel required minlength="6" #password="ngModel" autocomplete="new-password">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <input type="password" class="form-control" placeholder="ยืนยันรหัสผ่าน" name="confirmPassword" ngModel required minlength="6" #confirmPassword="ngModel" autocomplete="new-password">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <div class="icheck-primary">
+                    <input type="checkbox" id="agreeTerms" name="terms" value="true" ngModel required #terms="ngModel" >
+                    <label for="agreeTerms">
+                      ฉันเห็นด้วยกับ <a href="#">ข้อตกลง</a>
+                    </label>
+                  </div>
+                  <p *ngIf="email.invalid && !email.errors.required" class="error text-red text-xs">!กรุณาใส่อีเมล์ที่ถูกต้อง</p>
+                  <p *ngIf="(password.invalid && !password.errors.required) || (confirmPassword.invalid && !confirmPassword.errors.required)" class="error text-red text-xs">!รหัสผ่านของคุณจะต้องมีความยาวอย่างน้อย 6 ตัวอักษร</p>
+                  <p *ngIf="(!password.invalid && !confirmPassword.invalid) && (confirmPassword.value != password.value)" class="error text-red text-xs">!กรุณายืนยันรหัสผ่านให้ถูกต้อง</p> 
+                </div>
+                <!-- /.col -->
+                <div class="col-4">
+                  <button type="submit" class="btn btn-success btn-block" [disabled]="!(f.valid ==true && confirmPassword.value == password.value)">สมัคร</button>
+                </div>
+                <!-- /.col -->
+              </div>
+            </form>
+      
+            <div class="social-auth-links text-center">
+              <p>- หรือ -</p>
+              <firebase-ui></firebase-ui>
+            </div>
+      
+            <p class="mb-0 text-xs">
+              <a routerLink="/account/signin" class="text-center">ฉันมีสมาชิกแล้ว</a>
+            </p>
+          </div>
+          <!-- /.form-box -->
+        </div><!-- /.card -->
+      </div>
+      <!-- /.register-box -->    
+</div>
+
+<ng-template #customLoadingTemplate>
+  <div class="custom-class">
+      <h3>
+          Loading...
+      </h3>
+  </div>
+</ng-template>
+
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>

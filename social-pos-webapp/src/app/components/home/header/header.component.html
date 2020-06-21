@@ -6,7 +6,7 @@
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a routerLink="home" class="nav-link">หน้าหลัก</a>
+      <a routerLink="/app" class="nav-link">หน้าหลัก</a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
       <a href="#" class="nav-link">ติดต่อ</a>
@@ -115,34 +115,47 @@
 
     <li class="nav-item dropdown user user-menu">
       <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-        <img src="assets/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
-        <span class="hidden-xs">Alexander Pierce</span>
+        <img *ngIf="photoURL" src="{{photoURL}}" class="user-image img-circle elevation-2" alt="User Image">
+        <span *ngIf="displayName" class="hidden-xs">{{displayName}}</span>
+        <span *ngIf="!displayName" class="hidden-xs">{{email}}</span>
       </a>
       <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
         <!-- User image -->
         <li class="user-header sidebar-triadic">
-          <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img *ngIf="photoURL" src="{{photoURL}}" class="img-circle elevation-2" alt="User Image">
   
           <p>
-            Alexander Pierce - Web Developer
-            <small>Member since Nov. 2012</small>
+            {{displayName}}
+            <small *ngIf="email">Email: {{email}}</small>
+            <small *ngIf="phoneNumber">Phone number: {{phoneNumber}}</small>
           </p>
         </li>
         
       
         <!-- Menu Footer-->
         <li class="user-footer">
-          <div class="pull-left left">
-            <a href="#" class="btn btn-success btn-block">โพรไฟล์</a>
+          <div *ngIf="emailVerified" class="pull-left left">
+            <a routerLink="/app/account" role="button" class="btn btn-success btn-block">โปรไฟล์</a>
+          </div>
+          <div *ngIf="!emailVerified" class="pull-left left">
+            <a routerLink="/app" role="button" class="btn btn-success btn-block" >ยืนยันอีเมล</a>
           </div>
         </li>
       </ul>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" routerLink="login" role="button" (click)="authService.signOut()" title="ออกจากระบบ"><i class="fas fa-sign-out-alt"></i></a>
+      <a class="nav-link" routerLink="/app" (click)="signOut()" title="ออกจากระบบ"><i class="fas fa-sign-out-alt"></i></a>
     </li>
     
   </ul>
 </nav>
 <!-- /.navbar -->
+<ng-template #customLoadingTemplate>
+  <div class="custom-class">
+      <h3>
+          Loading...
+      </h3>
+  </div>
+</ng-template>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
