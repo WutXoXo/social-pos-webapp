@@ -8,9 +8,10 @@ import { Guid } from "guid-typescript";
 import {NgForm} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Profile } from 'src/app/models/profile';
-import { ProfileActivity } from 'src/app/models/profileactivity';
+import { ProfileActivity } from 'src/app/models/profile-activity';
 import { Observable, Observer } from "rxjs";
 import { finalize, tap } from 'rxjs/operators';
+import { ProfileSubjectService } from 'src/app/services/sharing/profile-subject.service';
 
 @Component({
   selector: 'app-profile',
@@ -36,6 +37,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private authService: AuthenticationService,
+    private _sharedSubject: ProfileSubjectService,
     private afAuth:AngularFireAuth,
     private router: Router,
     private ng2ImgMax: Ng2ImgMaxService,
@@ -58,7 +60,8 @@ export class ProfileComponent implements OnInit {
       this.loading = true;
       this.authService.updateDisplayName(this.profile.displayName).then((result) => {    
         activity.setButton(activity.disable); 
-        this.loading = false;   
+        this.loading = false;
+        this.shared(this.profile);   
      }).catch((error) => {
        this.loading = false;
      });      
@@ -73,7 +76,8 @@ export class ProfileComponent implements OnInit {
   {
     this.loading = true;
       this.authService.updatePhotoURL(photo).then((result) => {     
-        this.loading = false;   
+        this.loading = false;
+        this.shared(this.profile);      
      }).catch((error) => {
        this.loading = false;
      });     
@@ -86,7 +90,8 @@ export class ProfileComponent implements OnInit {
       this.loading = true;
       this.authService.updatePhoneNumber(this.profile.phoneNumber).then((result) => {    
         activity.setButton(activity.disable); 
-        this.loading = false;   
+        this.loading = false;
+        this.shared(this.profile);      
      }).catch((error) => {
        this.loading = false;
      });      
@@ -231,8 +236,11 @@ export class ProfileComponent implements OnInit {
         this.downloadURL = await ref.getDownloadURL().toPromise();
         console.log(this.downloadURL);
         this.loading = false;
-        this.onEditPhotoURL(this.downloadURL);
         this.profile.photoURL = this.downloadURL;
+        this.onEditPhotoURL(this.downloadURL); 
+        this.isShowCrop = false;    
+        this.imageFile2KB = null;  
+        this.croppedImage = "assets/100x100.png"; 
       })
     );
 
@@ -264,5 +272,9 @@ export class ProfileComponent implements OnInit {
         if(res.phoneNumber !=null) this.profile.phoneNumber = res.phoneNumber;
       }
     });
+  }
+
+  shared(input) {
+    this._sharedSubject.HeaderProfile.next(input);
   }
 }

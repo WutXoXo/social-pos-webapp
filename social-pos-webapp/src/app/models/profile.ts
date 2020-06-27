@@ -1,4 +1,4 @@
-import { ProfileActivity } from './profileactivity';
+import { ProfileActivity } from './profile-activity';
 
 export class Profile {
 

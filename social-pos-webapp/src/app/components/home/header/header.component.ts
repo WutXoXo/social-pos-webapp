@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from "../../../services/authentication.service";
 import {AngularFireAuth} from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { ProfileSubjectService } from 'src/app/services/sharing/profile-subject.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,21 @@ export class HeaderComponent implements OnInit {
   public phoneNumber:string; 
   public loading:boolean; 
 
-  constructor(private authService: AuthenticationService,private afAuth:AngularFireAuth,private router: Router) { }
+  constructor(private authService: AuthenticationService,
+    private _sharedSubject: ProfileSubjectService,
+    private afAuth:AngularFireAuth,
+    private router: Router) { 
+
+      this._sharedSubject.HeaderProfile.subscribe(o => {
+          this.photoURL = o.photoURL;
+          this.displayName = o.displayName;
+          this.email = o.email;
+          this.phoneNumber = o.phoneNumber;
+      });
+
+    }
+
+    
 
   signOut() {
     this.authService.signOut()
