@@ -241,6 +241,7 @@ export class ProfileComponent implements OnInit {
         this.isShowCrop = false;    
         this.imageFile2KB = null;  
         this.croppedImage = "assets/100x100.png"; 
+        this.profile.photoURLActivity.button = "btn-default";
       })
     );
 
