@@ -5,20 +5,18 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { UShops } from 'src/app/entities/shops';
 
-declare const App : any;
-
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  selector: 'app-shop',
+  templateUrl: './shop.component.html',
+  styleUrls: ['./shop.component.scss']
 })
-export class MenuComponent implements OnInit {
-
+export class ShopComponent implements OnInit {
+  
+  public loading:boolean;
   public uShopsJoin: Observable<UShopsJoin[]>;
-  public uShops: Observable<UShops[]>;  
-  public isShopsJoin:boolean;
-  private uid:string;
-
+  public uShops: Observable<UShops[]>;
+  public isShopsJoin:boolean;  
+  public uid:string;
 
   constructor(private shopService:ShopsService,private auth:AngularFireAuth) { }
 
@@ -27,21 +25,26 @@ export class MenuComponent implements OnInit {
     this.uShops = this.shopService.getShop(shopId);
   }
 
+  joinShop(shopId:string)
+  {
+    this.shopService.joinShop(shopId,this.uid);    
+  }
+
   ngOnInit(): void {
-    App.initMainPage();
     this.auth.authState.subscribe(user =>{
       this.uid = user.uid;
       this.uShopsJoin = this.shopService.getJoinShop(this.uid);
       this.uShopsJoin.subscribe(shopsJoin =>{
-         let shop = shopsJoin.find(f => f.allow);
-         if(shop == null){ 
+        let shop = shopsJoin.find(f => f.allow);
+        if(shop == null)
+        { 
           this.isShopsJoin = true; 
           this.getShop("");         
-         }
+        }
         else{
           this.isShopsJoin = false;
           this.getShop(shop.shopId);
-        }
+        } 
       });      
     });    
   }

@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
     "admin-lte": "^3.0.5",
+    "angular-ng-autocomplete": "^2.0.1",
     "blueimp-canvas-to-blob": "^3.27.0",
     "firebase": "^7.15.0",
     "firebaseui": "^4.5.1",

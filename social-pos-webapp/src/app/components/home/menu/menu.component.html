@@ -9,12 +9,23 @@
     <!-- Sidebar -->
     <div class="sidebar">
 
-      <nav class="user-panel mt-2">
+      <nav class="user-panel mt-2" *ngIf="isShopsJoin">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="./index2.html" class="nav-link active bg-success">
+            <a routerLink="/app/shop" class="nav-link active bg-success">
               <i class="nav-icon fas fa-store-alt"></i>
               <p>สร้างร้านใหม่</p>
+            </a>
+          </li>          
+        </ul>
+      </nav>
+
+      <nav class="user-panel mt-2" *ngIf="!isShopsJoin">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item">
+            <a routerLink="/app/shop" class="nav-link active bg-success">
+              <i class="nav-icon fas fa-store-alt"></i>
+              <p *ngFor="let shop of uShops | async">{{shop.shopName}}</p>
             </a>
           </li>          
         </ul>

@@ -24,7 +24,11 @@ const routes: Routes = [
       {
         path:'account',
         loadChildren: () => import('./modules/accounts/accounts.module').then(m => m.AccountsModule)
-      },    
+      },
+      { 
+        path: 'shop', 
+        loadChildren: () => import('./modules/shops/shops.module').then(m => m.ShopsModule) 
+      },   
       {
         path: 'dashboard',
         component: DashboardComponent
@@ -34,9 +38,10 @@ const routes: Routes = [
   { 
     path: 'account', 
     loadChildren: () => import('./modules/accounts/accounts.module').then(m => m.AccountsModule) 
-  },
+  },  
   { 
-    path:'**',redirectTo:'/app' 
+    path:'**',
+    redirectTo:'/app' 
   }
 ];
 

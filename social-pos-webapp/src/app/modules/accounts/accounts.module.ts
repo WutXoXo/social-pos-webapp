@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HammerModule } from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 
 import {FirebaseUIModule} from 'firebaseui-angular';
@@ -48,6 +49,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     FormsModule,
     HttpClientModule,
     ImageCropperModule,
+    HammerModule,
     AccountsRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,

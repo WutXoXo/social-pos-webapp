@@ -1,0 +1,235 @@
+<div class="content-wrapper">
+
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 *ngIf="mode">สร้างร้านใหม่</h1>
+            <h1 *ngIf="!mode">แก้ไขข้อมูลร้าน</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a routerLink="/app/shop">ร้านค้า</a></li>
+              <li *ngIf="mode" class="breadcrumb-item active">สร้างร้านใหม่</li>
+              <li *ngIf="!mode" class="breadcrumb-item active">แก้ไขข้อมูลร้าน</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+        <form #f="ngForm" class="form-horizontal" (ngSubmit)="submitShop(f)">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">รูปโลโก้</h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group row">                 
+                                <div class="col-sm-12">
+                                    <div class="card-body" style="padding-left: 0 !important;">
+                                        <img [src]="croppedImage" alt="รูปตัวอย่าง" class="img-thumbnail" width="100" height="100">
+                                    </div>
+                                    <div class="input-group input-group-sm">                                
+                                        <div class=" custom-file">
+                                            <input type="file" class="custom-file-input" (change)="fileChangeEvent($event)"  accept=".png,.jpg">
+                                            <label class="custom-file-label" for="exampleInputFile">เลือกไฟล์</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span>
+                                                <button type="button" class="btn {{photoURLActivity}} btn-flat" title="อัพโหลด" [disabled]="imageFile2KB == null" (click)="storageUpload()">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>รูปตัวอย่าง</label>
+                            <img src="assets/photo_crop.png" alt="รูปตัวอย่าง" class="img-thumbnail" *ngIf="!isShowCrop">
+                            <image-cropper
+                                *ngIf="isShowCrop"
+                                class="img-thumbnail"
+                                [resizeToWidth] = 100
+                                [resizeToHeight] = 100
+                                [imageChangedEvent]="imageChangedEvent"
+                                [maintainAspectRatio]="true"
+                                [aspectRatio]="1 / 1"
+                                format="png"
+                                (imageCropped)="imageCropped($event)">
+                            </image-cropper>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-primary">
+                <div class="card-header">
+                <h3 class="card-title">ข้อมูลร้านค้าทั่วไป</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                        <label>ชื่อร้าน</label>
+                        <input type="text" class="form-control is-invalid" placeholder="ชื่อร้าน" name="shopName" required [(ngModel)]="shopName">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                        <label>ภาษีมูลค่าเพิ่ม</label>
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch3" name="isVat" [(ngModel)]="isVat">
+                            <label *ngIf="!isVat" class="custom-control-label" for="customSwitch3">ไม่จดทะเบียน</label>
+                            <label *ngIf="isVat" class="custom-control-label" for="customSwitch3">จดทะเบียน</label>
+                          </div>
+                        </div>
+                        <div *ngIf="isVat" class="form-group">
+                            <div class="custom-control custom-radio">
+                              <input class="custom-control-input" type="radio" id="customRadio1" name="customRadio" [value]="1" name="typeVat" [(ngModel)]="typeVat">
+                              <label for="customRadio1" class="custom-control-label">including vat</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                              <input class="custom-control-input" type="radio" id="customRadio2" name="customRadio" [value]="2" name="typeVat" [(ngModel)]="typeVat">
+                              <label for="customRadio2" class="custom-control-label">excluding vat</label>
+                            </div>                            
+                          </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                            <label>คำอธิบายเกี่ยวกับร้านค้าของคุณ</label>
+                            <textarea class="form-control" rows="3" placeholder="เขียนคำอธิบาย..."></textarea>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+            <div class="card card-primary">
+                <div class="card-header">
+                <h3 class="card-title">ข้อมูลผู้ติดต่อ</h3>
+                </div>
+                
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>ชื่อ</label>
+                                <input type="text" class="form-control" placeholder="ชื่อ" name="firstName" [(ngModel)]="firstName">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>นามสกุล</label>
+                                <input type="text" class="form-control" placeholder="นามสกุล" name="lastName" [(ngModel)]="lastName">
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>เบอร์มือถือ</label>
+                                <input type="tel" class="form-control" placeholder="เบอร์มือถือ" name="phoneNumber" [(ngModel)]="phoneNumber" autocomplete=tel-local>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>อีเมล</label>
+                                <input type="email" class="form-control" placeholder="อีเมล" name="email" [(ngModel)]="email">
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>ที่อยู่</label>
+                                <input type="text" class="form-control" placeholder="99/999 สินทรัพย์นคร ซอย48 แยก19 ถนนพหลโยธิน" name="address" [(ngModel)]="address">
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>ค้นหา</label> 
+                                <div class="ng-autocomplete">
+                                    <ng-autocomplete 
+                                        [data]="data" 
+                                        [searchKeyword]="keyword" 
+                                        (selected)='selectEvent($event)'
+                                        (inputChanged)='getServerResponse($event)' 
+                                        [itemTemplate]="itemTemplate" 
+                                        (inputCleared)="searchCleared()"
+                                        [notFoundTemplate]="notFoundTemplate" 
+                                        [debounceTime]="600" 
+                                        [isLoading]="isLoadingResult" 
+                                        [minQueryLength]="2" 
+                                        placeHolder="ค้นหา แขวง/ตำบล อำเภอ/เขต จังหวัด รหัสไปรษณีย์"
+                                    >
+                                    </ng-autocomplete>
+                                
+                                    <ng-template #itemTemplate let-item>
+                                        <a href="javascript:void(0)"><span [innerHTML]="item.text"></span></a>
+                                    </ng-template>
+                                
+                                    <ng-template #notFoundTemplate let-notFound>
+                                        {{errorMsg}}
+                                    </ng-template>
+                                </div>                               
+                            </div>                            
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>แขวง/ตำบล</label>
+                                <input type="text" class="form-control" placeholder="แขวง/ตำบล" name="district" [(ngModel)]="district" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>อำเภอ/เขต</label>
+                                <input type="text" class="form-control" placeholder="อำเภอ/เขต" name="border" [(ngModel)]="border" disabled>
+                            </div>   
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>จังหวัด</label>
+                                <input type="text" class="form-control" placeholder="จังหวัด" name="province" [(ngModel)]="province" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>รหัสไปรษณีย์</label>
+                                <input type="text" class="form-control" placeholder="รหัสไปรษณีย์" name="postCode" [(ngModel)]="postCode" disabled>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="button" class="btn btn-default" routerLink="/app/shop">ยกเลิก</button>
+                    <button type="submit" class="btn btn-success float-right" [disabled]="!f.valid">บันทึก</button>
+                </div>
+            </div>
+        </form>
+    </section>
+  </div>
+
+  <ng-template #customLoadingTemplate>
+    <div class="custom-class">
+        <h3>
+            Loading...
+        </h3>
+    </div>
+  </ng-template>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px',fullScreenBackdrop:true }" [template]="customLoadingTemplate"></ngx-loading>

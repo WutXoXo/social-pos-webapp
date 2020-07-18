@@ -1,0 +1,103 @@
+  <div class="content-wrapper">
+
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>ร้านค้า</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a routerLink="/app">หน้าหลัก</a></li>
+              <li class="breadcrumb-item active">ร้านค้า</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="sticky-top mb-3">
+            
+              <div *ngIf="isShopsJoin" class="card card-outline card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">เข้าร่วมร้านค้า</h3>
+                </div>
+                <div class="card-body">                 
+                  <div class="input-group input-group-sm">
+                    <input type="search" class="form-control" placeholder="ค้นหา">
+                    <div class="input-group-append">
+                        <button type="button" title="ค้นหา" class="btn btn-default btn-flat"><i class="fas fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card card-outline card-primary">
+                <div class="card-header">
+                  <h4 class="card-title">ร้านค้าของคุณ</h4>
+                </div>
+
+                <div class="card-body">
+
+                  <div class="card bg-light" *ngFor="let shop of uShops | async">
+                    <div class="card-header text-muted border-bottom-0">
+                      {{shop.shopName}}
+                    </div>
+                    <div class="card-body pt-0">
+                      <div class="row">
+                        <div class="col-7">
+                          <ul class="ml-4 mb-0 fa-ul text-muted">
+                            <li class="small" *ngIf="shop.address != null && shop.address != ''"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> {{shop.address}}</li>
+                            <li class="small" *ngIf="shop.phoneNumber != null && shop.phoneNumber != ''"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {{shop.phoneNumber}}</li>
+                          </ul>
+                        </div>
+                        <div class="col-5 text-center">
+                          <img src="{{shop.photoURL}}" alt="" class="img-circle img-fluid">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer" *ngIf="shop.ownerId == uid">
+                      <div class="text-right">                        
+                        <a routerLink="/app/shop/{{shop.shopId}}/modify" class="btn btn-sm btn-success">
+                          <i class="fas fa-store-alt"></i> เพิ่มเติม</a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="text-center">
+                  <p *ngIf="isShopsJoin">ไม่พบร้านค้า</p>
+                  <a *ngIf="isShopsJoin" class="btn btn-app bg-success btn-block" style="margin:0;" routerLink="/app/shop/create">
+                      <i class="fas fa-plus-circle"></i>เพิ่มร้านค้า
+                  </a>
+                </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="content text-center">
+              <h3><i class="fas fa-exclamation-triangle text-warning"></i> ไม่พบข้อมูลสินค้า</h3>      
+              <p>คุณสามารถเริ่มเพิ่มสินค้าได้เลย</p>
+              <a class="btn btn-app bg-success" style="margin:0;" routerLink="/app/shop/create">
+                <i class="fas fa-plus-circle"></i>เพิ่มสินค้า
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <ng-template #customLoadingTemplate>
+    <div class="custom-class">
+        <h3>
+            Loading...
+        </h3>
+    </div>
+  </ng-template>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px',fullScreenBackdrop:true }" [template]="customLoadingTemplate"></ngx-loading>
