@@ -69,7 +69,6 @@
                   </div>
                   
                   <div class="text-center">
-                  <p *ngIf="isShopsJoin">ไม่พบร้านค้า</p>
                   <a *ngIf="isShopsJoin" class="btn btn-app bg-success btn-block" style="margin:0;" routerLink="/app/shop/create">
                       <i class="fas fa-plus-circle"></i>เพิ่มร้านค้า
                   </a>
@@ -81,9 +80,11 @@
           </div>
           <div class="col-md-9">
             <div class="content text-center">
-              <h3><i class="fas fa-exclamation-triangle text-warning"></i> ไม่พบข้อมูลสินค้า</h3>      
-              <p>คุณสามารถเริ่มเพิ่มสินค้าได้เลย</p>
-              <a class="btn btn-app bg-success" style="margin:0;" routerLink="/app/shop/create">
+              <h3 *ngIf="!isShopsJoin"><i class="fas fa-exclamation-triangle text-warning"></i> ไม่พบข้อมูลสินค้า</h3>     
+              <h3 *ngIf="isShopsJoin"><i class="fas fa-exclamation-triangle text-warning"></i> ไม่พบข้อมูลร้าน</h3>       
+              <p  *ngIf="!isShopsJoin">คุณสามารถเริ่มเพิ่มสินค้าได้เลย</p>
+              <p  *ngIf="isShopsJoin">คุณสามารถเพิ่มร้านของคุณได้เลย</p>
+              <a  *ngIf="!isShopsJoin" class="btn btn-app bg-success" style="margin:0;" routerLink="/app/shop/create">
                 <i class="fas fa-plus-circle"></i>เพิ่มสินค้า
               </a>
             </div>
